@@ -1,29 +1,22 @@
 <template>
-  <div><slot :faqs="faqs"></slot></div>
+  <div><slot :faqsList="faqsList.value"></slot></div>
 </template>
 
 <script>
-import useFAQs from "../../hooks/faq/useFAQs";
-import { mapState } from "vuex";
-
-export const { faqList } = mapState(["faqList"]);
 import { ref } from "@vue/composition-api";
+import { useState, useActions, useRouter } from "@u3u/vue-hooks";
 
 export default {
   setup(props, { root: { $store } }) {
-    const faqs = ref([]);
-    // $store.commit("setFaqList",{});
-    const { getFAQs } = useFAQs($store);
+    const faqsList = ref([]);
+    const { faqList, loading } = useState("faqs", ["faqList", "loading"]);
+    const { getFaqList } = useActions("faqs", ["getFaqList"]);
 
-    async () => {
-      console.log("11111");
-      await getFAQs();
-    };
+    getFaqList();
+    faqsList.value = ref(faqList);
+    console.log("fa", faqsList.value);
 
-    // getFAQs();
-    faqs.value = $store.getters.faqList;
-
-    return { faqs };
+    return { faqsList };
   },
 };
 </script>
