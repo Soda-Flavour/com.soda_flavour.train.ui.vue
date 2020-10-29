@@ -17,84 +17,50 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="/"
-              >대쉬보드 <span class="sr-only">(current)</span></a
-            >
+            <a class="nav-link" href="/">
+              대쉬보드
+              <span class="sr-only">(current)</span>
+            </a>
           </li>
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="javascript:;"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
+            <a class="nav-link dropdown-toggle" href="javascript:;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               마이페이지
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">활동 관리</a>
-              <a class="dropdown-item" href="#">정산 내역</a>
-              <a class="dropdown-item" href="#">나의 정보</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">상담 후기</a>
+              <router-link class="dropdown-item" :to="{ name: 'my_page-activity' }">활동 관리</router-link>
+              <router-link class="dropdown-item" :to="{ name: 'my_page-settlement_details' }">정산 내역</router-link>
+              <router-link class="dropdown-item" :to="{ name: 'my_page-my_info' }">나의 정보</router-link>
+              <!-- <div class="dropdown-divider"></div> -->
+              <router-link class="dropdown-item" :to="{ name: 'my_page-review' }">상담 후기</router-link>
             </div>
           </li>
 
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="javascript:;"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
+            <a class="nav-link dropdown-toggle" href="javascript:;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               상담 관리
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">예약 관리</a>
-              <a class="dropdown-item" href="#">진행중인 상담</a>
-              <a class="dropdown-item" href="#">종료된 상담</a>
-              <a class="dropdown-item" href="#">내담자 상담내역</a>
+              <router-link class="dropdown-item" :to="{ name: 'counseling_management-reservation' }">예약 관리</router-link>
+              <router-link class="dropdown-item" :to="{ name: 'counseling_management-ongoing' }">진행중인 상담</router-link>
+              <router-link class="dropdown-item" :to="{ name: 'counseling_management-terminated' }">종료된 상담</router-link>
+              <router-link class="dropdown-item" :to="{ name: 'counseling_management-details_of_client' }">내담자 상담내역</router-link>
             </div>
           </li>
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="javascript:;"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              상품관리
-            </a>
+            <a class="nav-link dropdown-toggle" href="javascript:;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">상품관리</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">문자상담</a>
-              <a class="dropdown-item" href="#">전화상담</a>
+              <router-link class="dropdown-item" :to="{ name: 'product_management-textual' }">문자상담</router-link>
+              <router-link class="dropdown-item" :to="{ name: 'product_management-telephone' }">전화상담</router-link>
             </div>
           </li>
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="javascript:;"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
+            <a class="nav-link dropdown-toggle" href="javascript:;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               도움 센터
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">공지사항</a>
-              <a class="dropdown-item" href="#">장애신고</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">이용안내</a>
+              <router-link class="dropdown-item" :to="{ name: 'help_center-notice' }">공지사항</router-link>
+              <router-link class="dropdown-item" :to="{ name: 'help_center-disability_report' }">장애신고</router-link>
+              <router-link class="dropdown-item" :to="{ name: 'help_center-how_to_use' }">이용안내</router-link>
             </div>
           </li>
         </ul>
@@ -109,12 +75,7 @@
             Search
           </button>
         </form> -->
-        <button
-          class="btn btn-outline-secondary ml-lg-3 my-2"
-          v-on:click="actLogout"
-        >
-          로그아웃
-        </button>
+        <button class="btn btn-outline-secondary ml-lg-3 my-2" v-on:click="actLogout">로그아웃</button>
       </div>
     </nav>
   </div>
@@ -124,7 +85,7 @@
 import { useActions } from "@u3u/vue-hooks";
 
 export default {
-  setup(props) {
+  setup() {
     const { actLogout } = useActions("auth", ["actLogout"]);
 
     return { actLogout };
@@ -132,5 +93,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
