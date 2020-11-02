@@ -3,7 +3,8 @@
     <div class="sidenav">
       <div class="login-main-text">
         <h2>
-          Application<br />
+          Application
+          <br />
           Login Page
         </h2>
         <p>Login or register from here to access.</p>
@@ -15,26 +16,14 @@
           <form @submit.prevent="doLogin">
             <div class="form-group">
               <label>User Name</label>
-              <input
-                v-model="user_id"
-                type="text"
-                class="form-control"
-                placeholder="User Name"
-              />
+              <input v-model="user_id" type="text" class="form-control" placeholder="User Name" />
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input
-                v-model="user_password"
-                type="password"
-                class="form-control"
-                placeholder="Password"
-              />
+              <input v-model="user_password" type="password" class="form-control" placeholder="Password" />
             </div>
             <button type="submit" class="btn btn-black">Login</button>
-            <button type="button" class="btn btn-secondary ml-2">
-              Register
-            </button>
+            <button type="button" class="btn btn-secondary ml-2">Register</button>
           </form>
         </div>
       </div>
@@ -56,7 +45,7 @@ export default {
     const user_password = ref("");
 
     async function doLogin() {
-      let isLogin = await actLogin({
+      const isLogin = await actLogin({
         user_id: user_id.value,
         user_password: user_password.value,
       });
