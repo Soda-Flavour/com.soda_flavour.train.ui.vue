@@ -1,20 +1,17 @@
-import API_URL from '../../API_URL';
-import userList from '../dump/userList';
-import {
-  useRouter
-} from "@u3u/vue-hooks";
-
+import { useRouter } from "@u3u/vue-hooks";
+// import API_URL from "../../API_URL";
+import userList from "../dump/adminUserList";
 
 export default {
   namespaced: true,
   state: {
     loading: false,
-    isLogin: localStorage.getItem('is_login'),
+    isLogin: localStorage.getItem("is_login"),
     isLoginError: false,
   },
   mutations: {
     loginSuccess(state) {
-      localStorage.setItem('is_login', true);
+      localStorage.setItem("is_login", true);
       state.isLogin = true;
       state.isLoginError = false;
     },
@@ -25,72 +22,59 @@ export default {
     logout(state) {
       state.isLogin = false;
       localStorage.clear();
-    }
+    },
   },
   actions: {
-    async actLogin({
-      state,
-      commit
-    }, reqParams) {
+    async actLogin({ state, commit }, reqParams) {
       try {
         state.loading = true;
-        console.log('진입');
-        console.log('id', reqParams);
+        console.log("진입");
+        console.log("id", reqParams);
         // const response = await fetch(API_URL + '/faqs');
         // const json = await response.json();
         const json = userList;
-        let users = json.result.data.list;
+        const users = json.result.data.list;
 
-
-        //connect to dump...
+        // connect to dump...
         let selectUser = null;
 
-        for (let user of users) {
-
+        for (const user of users) {
           if (user.user_id == reqParams.user_id) {
-
             selectUser = user;
           }
         }
-        console.log('selectUser', selectUser)
-
+        console.log("selectUser", selectUser);
 
         if (selectUser === null || selectUser.password !== reqParams.user_password) {
-          console.log('111111');
+          console.log("111111");
           commit("loginFail");
           return {
-            status: 'fail',
-            message: "로그인에 실패했습니다."
-          };
-        } else {
-
-          commit("loginSuccess");
-          console.log('222222');
-          return {
-            status: 'success',
-            message: "로그인에 성공했습니다."
+            status: "fail",
+            message: "로그인에 실패했습니다.",
           };
         }
 
-
-
-
-      } catch (error) {}
-      state.loading = false;
+        commit("loginSuccess");
+        console.log("222222");
+        return {
+          status: "success",
+          message: "로그인에 성공했습니다.",
+        };
+      } catch (error) {
+        state.loading = false;
+        return {
+          status: "fail",
+          message: "로그인에 실패했습니다.",
+        };
+      }
     },
-    async actLogout({
-      state,
-      commit
-    }) {
-      const {
-        router
-      } = useRouter();
+    async actLogout({ state, commit }) {
+      const { router } = useRouter();
 
       commit("logout");
       router.push({
-        name: "login"
+        name: "login",
       });
     },
-
   },
 };
