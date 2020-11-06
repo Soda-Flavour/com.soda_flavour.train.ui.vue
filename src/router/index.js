@@ -115,6 +115,11 @@ const routes = [
     // component: loadView('/login/Login.page.vue')
     children: [
       {
+        path: "consultation_detail",
+        name: "counseling_management-consultation_detail",
+        component: loadView("/counseling_management/consultation_detail/ConsultationDetail.page.vue"),
+      },
+      {
         path: "details_of_client",
         name: "counseling_management-details_of_client",
         component: loadView("/counseling_management/details_of_client/DetailsOfClient.page.vue"),
