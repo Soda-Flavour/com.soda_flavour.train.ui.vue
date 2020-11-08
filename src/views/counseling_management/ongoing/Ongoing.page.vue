@@ -29,13 +29,19 @@
       <tbody>
         <tr v-for="(item, index) in userList" :key="index">
           <th scope="row">{{ index + 1 }}</th>
-          <td>{{ item.user_id }}</td>
+          <td>
+            <a class="text-primary">{{ item.user_id }}</a>
+          </td>
           <td>
             <span v-if="item.counseling_type == 'text'">문자</span>
             <span v-else-if="item.counseling_type == 'tel'">전화</span>
             ({{ item.counseling_time_length }}분)
           </td>
-          <td>{{ item.coming_up_counseling_date }}</td>
+          <td>
+            <router-link class="text-primary" :to="{ name: 'counseling_management-consultation_detail', query: { userId: 123 } }">
+              {{ item.coming_up_counseling_date }}
+            </router-link>
+          </td>
           <td>{{ item.number_of_times }}</td>
           <td>{{ item.expiration_date }}</td>
         </tr>
