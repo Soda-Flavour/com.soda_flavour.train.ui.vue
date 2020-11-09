@@ -10,6 +10,7 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import { useState } from "@u3u/vue-hooks";
+
 export default {
   name: "App",
   components: { Navbar },
@@ -20,5 +21,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

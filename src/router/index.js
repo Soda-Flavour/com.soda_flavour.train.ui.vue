@@ -7,11 +7,13 @@ Vue.use(VueRouter);
 
 function loadView(view) {
   // eslint-disable-next-line prettier/prettier
-  return () => import(/* webpackChunkName: "view-[request]" */ `@/views${view}`);
+  return () => import( /* webpackChunkName: "view-[request]" */ `@/views${view}`);
 }
 
 const rejectAuthUser = (to, from, next) => {
-  const { isLogin } = store.state.auth;
+  const {
+    isLogin
+  } = store.state.auth;
   if (isLogin === "true") {
     console.log("진입");
     alert("로그인된 유저입니다.");
@@ -21,7 +23,9 @@ const rejectAuthUser = (to, from, next) => {
   }
 };
 const onlyAuthUser = (to, from, next) => {
-  const { isLogin } = store.state.auth;
+  const {
+    isLogin
+  } = store.state.auth;
   if (isLogin === "true") {
     next();
   } else {
@@ -29,8 +33,7 @@ const onlyAuthUser = (to, from, next) => {
   }
 };
 
-const routes = [
-  {
+const routes = [{
     path: "/",
     name: "home",
     beforeEnter: onlyAuthUser,
@@ -43,7 +46,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "create" */ "../views/faq/Create.page.vue"),
+    component: () => import( /* webpackChunkName: "create" */ "../views/faq/Create.page.vue"),
   },
   {
     path: "/update/:id",
@@ -52,7 +55,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "update" */ "../views/faq/Update.page.vue"),
+    component: () => import( /* webpackChunkName: "update" */ "../views/faq/Update.page.vue"),
   },
   {
     path: "/login",
@@ -77,8 +80,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     // component: loadView('/login/Login.page.vue')
-    children: [
-      {
+    children: [{
         path: "activity",
         name: "my_page-activity",
         component: loadView("/my_page/activity/Activity.page.vue"),
@@ -113,11 +115,15 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     // component: loadView('/login/Login.page.vue')
-    children: [
-      {
+    children: [{
         path: "consultation_detail",
         name: "counseling_management-consultation_detail",
         component: loadView("/counseling_management/consultation_detail/ConsultationDetail.page.vue"),
+      },
+      {
+        path: "consultation_chatting",
+        name: "counseling_management-consultation_chatting",
+        component: loadView("/counseling_management/chatting/Chatting.page.vue"),
       },
       {
         path: "details_of_client",
@@ -154,8 +160,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     // component: loadView('/login/Login.page.vue')
-    children: [
-      {
+    children: [{
         path: "telephone",
         name: "product_management-telephone",
         component: loadView("/product_management/telephone/Telephone.page.vue"),
@@ -180,8 +185,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     // component: loadView('/login/Login.page.vue')
-    children: [
-      {
+    children: [{
         path: "disability_report",
         name: "help_center-disability_report",
         component: loadView("/help_center/disability_report/DisabilityReport.page.page.vue"),
@@ -200,6 +204,9 @@ const routes = [
   },
 ];
 
-const router = new VueRouter({ mode: "history", routes });
+const router = new VueRouter({
+  mode: "history",
+  routes
+});
 
 export default router;
