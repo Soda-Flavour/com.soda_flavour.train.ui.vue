@@ -2,106 +2,46 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { errorMsg } from "../../constant/errorMsg";
+
 import HttpException from "../../lib/HttpException";
-import JwtAuth from "../../lib/jwtAuth";
-import { isExistEmail, isExistNickname, createUser } from "./auth.queries";
+import JwtAuth from "../../lib/JwtAuth";
+import AuthQueries from "./auth.queries";
 
 class authController {
-  async create(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { nick, email, password, confirmPassword } = req.body as {
-        nick: string;
-        email: string;
-        password: string;
-        confirmPassword: string;
-      };
-
-      if (password !== confirmPassword) {
-        const err = new HttpException(403, errorMsg["E2104"], "E2104");
-        throw err;
-      }
-
-      const reqParams = { email };
-      const resultData = await isExistEmail(reqParams);
-
-      if (resultData !== undefined) {
-        const err = new HttpException(403, errorMsg["E2105"], "E2105");
-        throw err;
-      }
-
-      const _reqParams = { nick };
-      const _resultData = await isExistNickname(_reqParams);
-
-      if (_resultData !== undefined) {
-        const err = new HttpException(403, errorMsg["E2106"], "E2106");
-        throw err;
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 12);
-
-      const userDataParams = {
-        nick,
-        email,
-        password: hashedPassword,
-      };
-
-      const insertResult = await createUser(userDataParams);
-      if (insertResult === false) {
-        const err = new HttpException(403, errorMsg["E2107"], "E2107");
-        throw err;
-      }
-
-      res.json({
-        result: {
-          status: 200,
-          message: "회원가입에 성공했습니다.",
-          data: {
-            email: email,
-          },
-        },
-      });
-    } catch (error) {
-      if (!(error instanceof HttpException)) {
-        const _error = new HttpException(403, errorMsg["E2000"], "E2000");
-        next(_error);
-      }
-      next(error);
-    }
-  }
-
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, password } = req.body as {
-        email: string;
+      const { login_id, password: login_hash } = req.body as {
+        login_id: string;
         password: string;
       };
 
-      const reqParams = { email };
-      const resultData = await isExistEmail(reqParams);
+      const reqParams = { login_id };
+      const resultData = await AuthQueries.isExistId(reqParams);
 
       if (resultData === undefined) {
-        const err = new HttpException(403, errorMsg["E2201"], "E2201");
+        const err = new HttpException(403, "E2201");
         throw err;
       }
-      console.log(resultData["password"]);
+
       const validPassword = await bcrypt.compare(
-        password,
-        resultData["password"]
+        login_hash,
+        resultData["login_hash"]
       );
+      console.log(validPassword);
       if (!validPassword) {
-        const err = new HttpException(403, errorMsg["E2202"], "E2202");
+        const err = new HttpException(403, "E2202");
         res.status(403);
         throw err;
       }
 
       const payload = {
-        id: resultData["id"],
+        teacher_id: resultData["teacher_id"],
         nick: resultData["nick"],
-        email,
+        login_id,
       } as {
-        id: number;
+        teacher_id: string;
         nick: string;
-        email: string;
+        login_id: string;
       };
 
       const access_t: string = await JwtAuth.sign(payload);
@@ -112,7 +52,7 @@ class authController {
           status: 200,
           message: "로그인에 성공했습니다.",
           data: {
-            email: email,
+            login_id: login_id,
             access_t,
             refresh_t,
           },
@@ -120,7 +60,7 @@ class authController {
       });
     } catch (error) {
       if (!(error instanceof HttpException)) {
-        const _error = new HttpException(403, errorMsg["E2200"], "E2200");
+        const _error = new HttpException(403, "E2200");
         next(_error);
       }
       next(error);
