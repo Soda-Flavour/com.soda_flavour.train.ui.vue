@@ -1,48 +1,35 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.page.vue";
-import store from "../store/index";
 
 Vue.use(VueRouter);
+
+
 
 function loadView(view) {
   // eslint-disable-next-line prettier/prettier
   return () => import( /* webpackChunkName: "view-[request]" */ `@/views${view}`);
 }
 
-const rejectAuthUser = (to, from, next) => {
-  const {
-    isLogin
-  } = store.state.auth;
-  if (isLogin === "true") {
-    console.log("진입");
-    alert("로그인된 유저입니다.");
-    next("/");
-  } else {
-    next();
-  }
-};
-const onlyAuthUser = (to, from, next) => {
-  const {
-    isLogin
-  } = store.state.auth;
-  if (isLogin === "true") {
-    next();
-  } else {
-    next("/login");
-  }
-};
+
 
 const routes = [{
     path: "/",
-    name: "home",
-    beforeEnter: onlyAuthUser,
-    component: Home,
+    name: "",
+    meta: {
+      requiresAuth: true,
+      is_admin: true,
+    },
+
+    component: () => import( /* webpackChunkName: "create" */ "../components/ContainerWithNav.vue"),
+    children: [{
+      path: '/',
+      name: 'home',
+      component: loadView("/Home.page.vue"),
+    }]
   },
   {
     path: "/create",
     name: "create",
-    beforeEnter: onlyAuthUser,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -51,31 +38,20 @@ const routes = [{
   {
     path: "/update/:id",
     name: "update",
-    beforeEnter: onlyAuthUser,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import( /* webpackChunkName: "update" */ "../views/faq/Update.page.vue"),
   },
-  {
-    path: "/login",
-    name: "login",
-    beforeEnter: rejectAuthUser,
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: loadView("/login/Login.page.vue"),
-    // component: () => import( /* webpackChunkName: "login" */ '../views/login/Login.page.vue'),
-  },
+
   {
     path: "/mypage",
     name: "mypage",
-    component: {
-      render(c) {
-        return c("router-view");
-      },
+    meta: {
+      requiresAuth: true,
+      is_admin: true,
     },
-    beforeEnter: onlyAuthUser,
+    component: () => import( /* webpackChunkName: "create" */ "../components/ContainerWithNav.vue"),
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -105,12 +81,16 @@ const routes = [{
   {
     path: "/counseling_management",
     name: "counseling_management",
-    component: {
-      render(c) {
-        return c("router-view");
-      },
+    component: () => import( /* webpackChunkName: "create" */ "../components/ContainerWithNav.vue"),
+    meta: {
+      requiresAuth: true,
+      is_admin: true,
     },
-    beforeEnter: onlyAuthUser,
+    // component: {
+    //   render(c) {
+    //     return c("router-view");
+    //   },
+    // },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -150,12 +130,16 @@ const routes = [{
   {
     path: "/product_management",
     name: "product_management",
+    meta: {
+      requiresAuth: true,
+      is_admin: true,
+    },
+    component: () => import( /* webpackChunkName: "create" */ "../components/ContainerWithNav.vue"),
     component: {
       render(c) {
         return c("router-view");
       },
     },
-    beforeEnter: onlyAuthUser,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -175,12 +159,16 @@ const routes = [{
   {
     path: "/help_center",
     name: "help_center",
+    meta: {
+      requiresAuth: true,
+      is_admin: true,
+    },
+    component: () => import( /* webpackChunkName: "create" */ "../components/ContainerWithNav.vue"),
     component: {
       render(c) {
         return c("router-view");
       },
     },
-    beforeEnter: onlyAuthUser,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -202,11 +190,105 @@ const routes = [{
       },
     ],
   },
+  {
+    path: "/login",
+    name: "login",
+    meta: {
+      requiresAuth: false,
+      is_admin: true,
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    // component: loadView("/login/Login.page.vue"),
+    // component: () => import('../views/login/Login.page.vue'),
+    component: () => import( /* webpackChunkName: "login" */ '../views/login/Login.page.vue'),
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   routes
 });
+
+
+
+router.beforeEach((to, from, next) => {
+
+
+  // console.log('beforeEach')
+  // console.log('to', to)
+  // console.log('from', from)
+  if (sessionStorage.getItem('teacher_access_token') == null) {
+    if (to.name !== 'login') {
+      next({
+        name: "login"
+      })
+    }
+  }
+  next();
+
+
+
+
+
+
+  // //requiresAuth == true 확인
+  // if (to.matched.some((record) => record.meta.requiresAuth)) {
+  //   console.log('1')
+  //   // 스토리지의 로그인 토큰 확인
+  //   if (sessionStorage.getItem('teacher_access_token') == null) {
+  //     //토큰 X 로그인 페이지로 이동
+  //     next({
+  //       path: "/login",
+  //       // query: {
+  //       //   redirect: to.fullPath
+  //       // },
+  //     })
+  //   } else {
+  //     //토큰 존재 진행
+  //     next();
+  //   }
+  // } else {
+
+  //   //로그인된 유저는 접근 금지
+  //   //토큰이 있는지 확인 
+  //   //토큰이 있다면 이전 페이지로 되돌리기
+  //   //토큰이 없다면 로그인 페이지로 이동
+  //   console.log(to.matched.some((record) => record.meta.requiresAuth))
+  //   if (sessionStorage.getItem('teacher_access_token') == null) {
+
+  //     console.log('토큰이 없습니다.')
+  //   }
+
+
+
+  //   // if (sessionStorage.getItem('teacher_access_token') == null) {
+  //   //   //토큰 X 로그인 페이지로 이동
+  //   //   next({
+  //   //     path: "/login",
+  //   //     // query: {
+  //   //     //   redirect: to.fullPath
+  //   //     // },
+  //   //   })
+  //   // } else {
+  //   //   //토큰 존재 진행
+  //   //   next(from.name);
+  //   // }
+  //   // //회원가입 페이지만 접속 가능
+  //   // if (to.name !== 'login') {
+  //   //   next({
+  //   //     path: "/login",
+  //   //     // query: {
+  //   //     //   redirect: to.fullPath
+  //   //     // },
+  //   //   })
+  //   // }
+  // }
+  // // next();
+
+});
+
+
 
 export default router;

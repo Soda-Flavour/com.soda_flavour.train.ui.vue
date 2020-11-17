@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isLogin">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">LOGO</a>
       <button
@@ -83,12 +83,14 @@
 
 <script>
 import { useActions } from "@u3u/vue-hooks";
+import { computed, ref } from "@vue/composition-api";
 
 export default {
   setup() {
     const { actLogout } = useActions("auth", ["actLogout"]);
+    const isLogin = ref(sessionStorage.getItem("teacher_access_token") && sessionStorage.getItem("teacher_access_token") !== "");
 
-    return { actLogout };
+    return { isLogin, actLogout };
   },
 };
 </script>
