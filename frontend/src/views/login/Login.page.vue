@@ -3,11 +3,11 @@
     <div class="sidenav">
       <div class="login-main-text">
         <h2>
-          Application
+          관리자
           <br />
-          Login Page
+          접속하기
         </h2>
-        <p>Login or register from here to access.</p>
+        <p>로그인 정보기 기억나지 않을때는 axa8380@gmail.com으로 연락하세요</p>
       </div>
     </div>
     <div class="main">
@@ -23,7 +23,7 @@
               <input v-model="user_password" type="password" class="form-control" placeholder="Password" />
             </div>
             <button type="submit" class="btn btn-black">Login</button>
-            <button type="button" class="btn btn-secondary ml-2">Register</button>
+            <!-- <button type="button" class="btn btn-secondary ml-2">Register</button> -->
           </form>
         </div>
       </div>
@@ -38,7 +38,7 @@ import { useRouter, useState, useActions } from "@u3u/vue-hooks";
 export default {
   name: "login",
   props: ["auth"],
-  setup(props) {
+  setup(props, context) {
     const { router } = useRouter();
     const { actLogin } = useActions("auth", ["actLogin"]);
     const user_id = ref("");
@@ -46,13 +46,17 @@ export default {
 
     async function doLogin() {
       const isLogin = await actLogin({
-        user_id: user_id.value,
-        user_password: user_password.value,
+        login_id: user_id.value,
+        password: user_password.value,
       });
+
+      const { isLogin: stst } = useState("auth", ["isLogin"]);
+
       if (isLogin.status === "fail") {
-        alert("로그인에 실패했습니다.");
+        alert(isLogin.message);
       } else {
-        router.push({ name: "home" });
+        console.log("이동합니다.");
+        this.$router.push("/");
       }
     }
 
@@ -86,6 +90,20 @@ body {
   padding: 0px 10px;
 }
 
+.login-main-text {
+  margin-top: 20%;
+  padding: 60px;
+  color: #fff;
+}
+.login-main-text h2 {
+  font-weight: 300;
+}
+
+.btn-black {
+  background-color: #000 !important;
+  color: #fff;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {
     padding-top: 15px;
@@ -99,6 +117,20 @@ body {
 
   .register-form {
     margin-top: 10%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .sidenav {
+    height: 40vh;
+    min-height: 200px;
+  }
+  .login-main-text {
+    margin-top: 0px;
+    padding: 4vh 10vw;
+  }
+  .main {
+    padding: 30px;
   }
 }
 
@@ -122,20 +154,5 @@ body {
   .register-form {
     margin-top: 20%;
   }
-}
-
-.login-main-text {
-  margin-top: 20%;
-  padding: 60px;
-  color: #fff;
-}
-
-.login-main-text h2 {
-  font-weight: 300;
-}
-
-.btn-black {
-  background-color: #000 !important;
-  color: #fff;
 }
 </style>
