@@ -1,0 +1,60 @@
+const userList = {
+  result: {
+    status: 200,
+    message: "리스트 입니다.",
+    data: {
+      list: [
+        {
+          user_id: "나무나무",
+          product_name: "20회 문자 상담",
+          counseling_type: "text",
+          counseling_time_length: "50",
+          number_of_times: "20",
+          payment_method: "Card",
+          pay_date: "2020.10.11 20:20",
+          sales_amount: "215000",
+          payment_amount: "205000",
+          actual_amount: "200000",
+        },
+        {
+          user_id: "나무나무",
+          product_name: "20회 문자 상담",
+          counseling_type: "text",
+          counseling_time_length: "50",
+          number_of_times: "20",
+          payment_method: "Card",
+          pay_date: "2020.10.11 20:20",
+          sales_amount: "215000",
+          payment_amount: "205000",
+          actual_amount: "200000",
+        },
+        {
+          user_id: "나무나무",
+          product_name: "20회 문자 상담",
+          counseling_type: "text",
+          counseling_time_length: "50",
+          number_of_times: "20",
+          payment_method: "Card",
+          pay_date: "2020.10.11 20:20",
+          sales_amount: "215000",
+          payment_amount: "205000",
+          actual_amount: "200000",
+        },
+        {
+          user_id: "나무나무",
+          product_name: "20회 문자 상담",
+          counseling_type: "text",
+          counseling_time_length: "50",
+          number_of_times: "20",
+          payment_method: "Card",
+          pay_date: "2020.10.11 20:20",
+          sales_amount: "215000",
+          payment_amount: "205000",
+          actual_amount: "200000",
+        },
+      ],
+    },
+  },
+};
+
+export default userList;

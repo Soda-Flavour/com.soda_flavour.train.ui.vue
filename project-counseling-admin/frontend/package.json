@@ -1,0 +1,50 @@
+{
+  "name": "admin_client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "migrate": "knex migrate:latest",
+    "rollback": "knex migrate:rollback",
+    "seed": "knex seed:run"
+  },
+  "dependencies": {
+    "@u3u/vue-hooks": "^2.0.1",
+    "@vue/composition-api": "^1.0.0-beta.18",
+    "bootstrap": "^4.5.3",
+    "core-js": "^3.6.5",
+    "jquery": "^3.5.1",
+    "moment": "^2.29.1",
+    "mysql2": "^2.2.5",
+    "popper.js": "^1.16.1",
+    "vue": "^2.6.11",
+    "vue-quick-chat": "^1.2.6",
+    "vue-router": "^3.2.0",
+    "vue2-timepicker": "^1.1.5",
+    "vuejs-datepicker": "^1.6.2",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-airbnb": "^5.0.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-html": "^6.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-standard": "^4.0.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "expose-loader": "^1.0.1",
+    "i": "^0.3.6",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  }
+}
